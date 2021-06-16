@@ -4,7 +4,7 @@ import time
 import subprocess
 import tempfile
 
-from subprocess import PIPE, TimeoutExpired
+from subprocess import run, PIPE, TimeoutExpired
 
 from assemblyline_v4_service.common.base import ServiceBase
 from assemblyline_v4_service.common.result import Result, ResultSection, BODY_FORMAT
@@ -35,9 +35,10 @@ class WindowsDefender(ServiceBase):
 
         if mpclient is None:            
             result.add_section(ResultSection('mpclient timed out'))
-        elif mpclient.returncode != 0:
-            raise RuntimeError(f'mpclient returned a non-zero exit status {mpclient.returncode}\n'
-                               f'stderr:\n{mpclient.stderr}')
+        
+        # elif mpclient.returncode != 0:
+        #     raise RuntimeError(f'mpclient returned a non-zero exit status {mpclient.returncode}\n'
+        #                        f'stderr:\n{mpclient.stderr}')
         else:       
             output = mpclient.stderr.strip().split("\n")
             if (len(output) == 3):
